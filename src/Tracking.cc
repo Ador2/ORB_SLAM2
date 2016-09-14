@@ -393,7 +393,7 @@ void Tracking::Track()
         }
 
         mCurrentFrame.mpReferenceKF = mpReferenceKF;
-
+        NumTracking = mpReferenceKF->TrackedMapPoints(3);  //Thanabadee edited
         // If we have an initial estimation of the camera pose and matching. Track the local map.
         if(!mbOnlyTracking)
         {
