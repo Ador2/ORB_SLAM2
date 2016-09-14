@@ -1,0 +1,4 @@
+build/
+Vocabulary/
+Thirdparty/*/build/ 
+Example/ROS/build

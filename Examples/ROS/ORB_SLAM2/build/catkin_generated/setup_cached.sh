@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# generated from catkin/python/catkin/environment_cache.py
+
+# based on a snapshot of the environment before and after calling the setup script
+# it emulates the modifications of the setup script without recurring computations
+
+# new environment variables
+
+# modified environment variables
+export CMAKE_PREFIX_PATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel:$CMAKE_PREFIX_PATH"
+export CPATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/include:$CPATH"
+export LD_LIBRARY_PATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/lib:/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/lib/x86_64-linux-gnu:/home/fx/Dropbox/catkin_ws/devel/lib/x86_64-linux-gnu:/opt/ros/indigo/lib/x86_64-linux-gnu:/home/fx/Dropbox/catkin_ws/devel/lib:/opt/ros/indigo/lib:/opt/ros/indigo/lib/python2.7/dist-packages:/opt/ros/indigo/lib/python2.7/dist-packages"
+export PATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/bin:$PATH"
+export PKG_CONFIG_PATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/lib/pkgconfig:/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/lib/x86_64-linux-gnu/pkgconfig:/home/fx/Dropbox/catkin_ws/devel/lib/x86_64-linux-gnu/pkgconfig:/opt/ros/indigo/lib/x86_64-linux-gnu/pkgconfig:/home/fx/Dropbox/catkin_ws/devel/lib/pkgconfig:/opt/ros/indigo/lib/pkgconfig"
+export PYTHONPATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/lib/python2.7/dist-packages:$PYTHONPATH"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2:/home/fx/Dropbox/catkin_ws/src/catkin_simple:/home/fx/Dropbox/catkin_ws/src/geographic_info/geographic_msgs:/home/fx/Dropbox/catkin_ws/src/gflags_catkin:/home/fx/Dropbox/catkin_ws/src/glog_catkin:/home/fx/Dropbox/catkin_ws/src/mavlink:/home/fx/Dropbox/catkin_ws/src/mavros/libmavconn:/home/fx/Dropbox/catkin_ws/src/mavros/mavros_msgs:/home/fx/Dropbox/catkin_ws/src/mavros/mavros:/home/fx/Dropbox/catkin_ws/src/multi_sensor_fusion/msf_timing:/home/fx/Dropbox/catkin_ws/src/multi_sensor_fusion/msf_core:/home/fx/Dropbox/catkin_ws/src/multi_sensor_fusion/msf_distort:/home/fx/Dropbox/catkin_ws/src/robot_localization:/home/fx/Dropbox/catkin_ws/src/rviz_plugin_covariance:/home/fx/Dropbox/catkin_ws/src/rviz_plugin_odometry_covariance:/home/fx/Dropbox/catkin_ws/src/rviz_plugin_odometry_to_path:/home/fx/Dropbox/catkin_ws/src/rviz_satellite:/home/fx/Dropbox/catkin_ws/src/multi_sensor_fusion/sensor_fusion_comm:/home/fx/Dropbox/catkin_ws/src/beginner_tutorials:/home/fx/Dropbox/catkin_ws/src/multi_sensor_fusion/msf_updates:/home/fx/Dropbox/catkin_ws/src/usb_cam:/home/fx/Dropbox/catkin_ws/src/using_markers:/home/fx/Dropbox/catkin_ws/src/ros-variant/variant_msgs:/home/fx/Dropbox/catkin_ws/src/ros-variant/variant_topic_tools:/home/fx/Dropbox/catkin_ws/src/ros-rqt-multiplot-plugin/rqt_multiplot:/opt/ros/indigo/share:/opt/ros/indigo/stacks"

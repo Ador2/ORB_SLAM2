@@ -24,6 +24,7 @@
 #include "Converter.h"
 #include <thread>
 #include <pangolin/pangolin.h>
+#include <iomanip>
 #include <time.h>
 
 bool has_suffix(const std::string &str, const std::string &suffix) {
@@ -431,5 +432,10 @@ void System::SaveTrajectoryKITTI(const string &filename)
     f.close();
     cout << endl << "trajectory saved!" << endl;
 }
-
+int System::GetNumTrack() {
+    return mpTracker->NumTracking;
+}
+int System::GetState() {
+    return mpTracker->mState;
+}
 } //namespace ORB_SLAM

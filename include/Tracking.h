@@ -114,7 +114,7 @@ public:
     bool mbOnlyTracking;
 
     void Reset();
-
+    int NumTracking; //thanabadee edited
 protected:
 
     // Main tracking function. It is independent of the input sensor.

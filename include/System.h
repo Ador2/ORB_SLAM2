@@ -109,7 +109,9 @@ public:
     // TODO: Save/Load functions
     // SaveMap(const string &filename);
     // LoadMap(const string &filename);
-
+        //thanabadee edited
+    int GetNumTrack();
+    int GetState();
 private:
 
     // Input sensor
