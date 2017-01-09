@@ -38,6 +38,9 @@
 #include "MapDrawer.h"
 #include "System.h"
 
+#include "IMU/imudata.h"
+#include "IMU/configparam.h"
+
 #include <mutex>
 
 namespace ORB_SLAM2
@@ -52,6 +55,18 @@ class System;
 
 class Tracking
 {  
+public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    ConfigParam* mpParams;
+    std::vector<IMUData> mvIMUSinceLastKF;
+    cv::Mat GrabImageMonocular(const cv::Mat &im, const std::vector<IMUData> &vimu, const double &timestamp);
+    IMUPreintegrator GetIMUPreIntSinceLastKF(Frame* pCurF, KeyFrame* pLastKF, const std::vector<IMUData>& vIMUSInceLastKF);
+    IMUPreintegrator GetIMUPreIntSinceLastFrame(Frame* pCurF, Frame* pLastF);
+
+
+
+
+
 
 public:
     Tracking(System* pSys, ORBVocabulary* pVoc, FrameDrawer* pFrameDrawer, MapDrawer* pMapDrawer, Map* pMap,

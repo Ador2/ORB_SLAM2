@@ -263,6 +263,36 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
 
     return mCurrentFrame.mTcw.clone();
 }
+cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const std::vector<IMUData> &vimu, const double &timestamp)
+{
+    mImGray = im;
+    mvIMUSinceLastKF.insert(mvIMUSinceLastKF.end(), vimu.begin(),vimu.end());
+
+    if(mImGray.channels()==3)
+    {
+        if(mbRGB)
+            cvtColor(mImGray,mImGray,CV_RGB2GRAY);
+        else
+            cvtColor(mImGray,mImGray,CV_BGR2GRAY);
+    }
+    else if(mImGray.channels()==4)
+    {
+        if(mbRGB)
+            cvtColor(mImGray,mImGray,CV_RGBA2GRAY);
+        else
+            cvtColor(mImGray,mImGray,CV_BGRA2GRAY);
+    }
+
+    if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
+        mCurrentFrame = Frame(mImGray,timestamp,vimu,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
+    else
+        mCurrentFrame = Frame(mImGray,timestamp,vimu,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth,mpLastKeyFrame);
+
+
+    Track();
+
+    return mCurrentFrame.mTcw.clone();
+}
 
 void Tracking::Track()
 {
@@ -565,6 +595,9 @@ void Tracking::MonocularInitialization()
 
     if(!mpInitializer)
     {
+        // Clear imu data
+        mvIMUSinceLastKF.clear();
+
         // Set Reference Frame
         if(mCurrentFrame.mvKeys.size()>100)
         {
@@ -636,9 +669,27 @@ void Tracking::MonocularInitialization()
 
 void Tracking::CreateInitialMapMonocular()
 {
+
+    // The first imu package include 2 parts for KF1 and KF2
+    vector<IMUData> vimu1,vimu2;
+    for(size_t i=0; i<mvIMUSinceLastKF.size(); i++)
+    {
+        IMUData imu = mvIMUSinceLastKF[i];
+        if(imu._t < mInitialFrame.mTimeStamp)
+            vimu1.push_back(imu);
+        else
+            vimu2.push_back(imu);
+    }
+
+
+
     // Create KeyFrames
-    KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB);
-    KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
+    KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB,vimu1,NULL);
+    pKFini->ComputePreInt();
+    KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB,vimu2,pKFini);
+    pKFcur->ComputePreInt();
+    // Clear IMUData buffer
+    mvIMUSinceLastKF.clear();
 
 
     pKFini->ComputeBoW();
@@ -1078,7 +1129,15 @@ void Tracking::CreateNewKeyFrame()
     if(!mpLocalMapper->SetNotStop(true))
         return;
 
-    KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
+    //TODO: is it necessary to clear IMU buffers if this is the first KeyFrame after relocalization (also no prevKF)?
+    KeyFrame* pKF = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB,mvIMUSinceLastKF,mpLastKeyFrame);
+    // Set initial NavState for KeyFrame
+    pKF->SetInitialNavStateAndBias(mCurrentFrame.GetNavState());
+    // Compute pre-integrator
+    pKF->ComputePreInt();
+    // Clear IMUData buffer
+    mvIMUSinceLastKF.clear();
+
 
     mpReferenceKF = pKF;
     mCurrentFrame.mpReferenceKF = pKF;
@@ -1516,11 +1575,11 @@ bool Tracking::Relocalization()
 
 void Tracking::Reset()
 {
-    mpViewer->RequestStop();
+    if(mpViewer) mpViewer->RequestStop();
 
     cout << "System Reseting" << endl;
-    while(!mpViewer->isStopped())
-        usleep(3000);
+    // while(!mpViewer->isStopped())
+    //     usleep(3000);
 
     // Reset Local Mapping
     cout << "Reseting Local Mapper...";
@@ -1555,7 +1614,7 @@ void Tracking::Reset()
     mlFrameTimes.clear();
     mlbLost.clear();
 
-    mpViewer->Release();
+    if(mpViewer) mpViewer->Release();
 }
 
 void Tracking::ChangeCalibration(const string &strSettingPath)
@@ -1594,6 +1653,65 @@ void Tracking::ChangeCalibration(const string &strSettingPath)
 void Tracking::InformOnlyTracking(const bool &flag)
 {
     mbOnlyTracking = flag;
+}
+IMUPreintegrator Tracking::GetIMUPreIntSinceLastKF(Frame* pCurF, KeyFrame* pLastKF, const std::vector<IMUData>& vIMUSInceLastKF)
+{
+    // Reset pre-integrator first
+    IMUPreintegrator IMUPreInt;
+    IMUPreInt.reset();
+
+    Vector3d bg = pLastKF->GetNavState().Get_BiasGyr();
+    Vector3d ba = pLastKF->GetNavState().Get_BiasAcc();
+
+    // remember to consider the gap between the last KF and the first IMU
+    {
+        const IMUData& imu = vIMUSInceLastKF.front();
+        double dt = imu._t - pLastKF->mTimeStamp;
+        IMUPreInt.update(imu._g - bg, imu._a - ba, dt);
+
+        // Test log
+        if(dt < 0)
+        {
+            cerr<<std::fixed<<std::setprecision(3)<<"dt = "<<dt<<", this KF vs last imu time: "<<pLastKF->mTimeStamp<<" vs "<<imu._t<<endl;
+            std::cerr.unsetf ( std::ios::showbase );                // deactivate showbase
+        }
+    }
+    // integrate each imu
+    for(size_t i=0; i<vIMUSInceLastKF.size(); i++)
+    {
+        const IMUData& imu = vIMUSInceLastKF[i];
+        double nextt;
+        if(i==vIMUSInceLastKF.size()-1)
+            nextt = pCurF->mTimeStamp;         // last IMU, next is this KeyFrame
+        else
+            nextt = vIMUSInceLastKF[i+1]._t;  // regular condition, next is imu data
+
+        // delta time
+        double dt = nextt - imu._t;
+        // update pre-integrator
+        IMUPreInt.update(imu._g - bg, imu._a - ba, dt);
+
+
+        // Test log
+        if(dt <= 0)
+        {
+            cerr<<std::fixed<<std::setprecision(3)<<"dt = "<<dt<<", this vs next time: "<<imu._t<<" vs "<<nextt<<endl;
+            std::cerr.unsetf ( std::ios::showbase );                // deactivate showbase
+        }
+    }
+
+    return IMUPreInt;
+}
+
+IMUPreintegrator Tracking::GetIMUPreIntSinceLastFrame(Frame* pCurF, Frame* pLastF)
+{
+    // Reset pre-integrator first
+    IMUPreintegrator IMUPreInt;
+    IMUPreInt.reset();
+
+    pCurF->ComputeIMUPreIntSinceLastFrame(pLastF,IMUPreInt);
+
+    return IMUPreInt;
 }
 
 

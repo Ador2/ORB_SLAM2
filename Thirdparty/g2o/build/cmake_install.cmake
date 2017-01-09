@@ -1,4 +1,4 @@
-# Install script for directory: /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o
+# Install script for directory: /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

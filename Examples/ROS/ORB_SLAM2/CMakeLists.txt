@@ -33,47 +33,63 @@ LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../../../cmake_modules)
 find_package(OpenCV 2.4.3 REQUIRED)
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
+# PCL #######################
+find_package(PCL 1.7 REQUIRED COMPONENTS common io)
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/../../../
+${PROJECT_SOURCE_DIR}/../../../src
 ${PROJECT_SOURCE_DIR}/../../../include
 ${Pangolin_INCLUDE_DIRS}
+${PCL_INCLUDE_DIRS}
 )
 
 set(LIBS 
 ${OpenCV_LIBS} 
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
+${PCL_LIBRARY_DIRS}
 ${PROJECT_SOURCE_DIR}/../../../Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/../../../Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/../../../lib/libORB_SLAM2.so
 )
+
 
 # Node for monocular camera
 rosbuild_add_executable(Mono
 src/ros_mono.cc
 )
 
+# Node for monocular camera
+rosbuild_add_executable(MonoVI
+src/ros_mono_vi_init.cc
+src/MsgSync/MsgSynchronizer.cpp
+src/MsgSync/MsgSynchronizer.h
+)
+
+target_link_libraries(MonoVI
+${LIBS}
+)
 target_link_libraries(Mono
 ${LIBS}
 )
 
-# Node for stereo camera
-rosbuild_add_executable(Stereo
-src/ros_stereo.cc
-)
+# # Node for stereo camera
+# rosbuild_add_executable(Stereo
+# src/ros_stereo.cc
+# )
 
-target_link_libraries(Stereo
-${LIBS}
-)
+# target_link_libraries(Stereo
+# ${LIBS}
+# )
 
-# Node for RGB-D camera
-rosbuild_add_executable(RGBD
-src/ros_rgbd.cc
-)
+# # Node for RGB-D camera
+# rosbuild_add_executable(RGBD
+# src/ros_rgbd.cc
+# )
 
-target_link_libraries(RGBD
-${LIBS}
-)
+# target_link_libraries(RGBD
+# ${LIBS}
+# )
 

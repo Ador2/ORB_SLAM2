@@ -36,6 +36,8 @@
 #include "ORBVocabulary.h"
 #include "Viewer.h"
 
+#include "IMU/imudata.h"
+
 namespace ORB_SLAM2
 {
 
@@ -72,10 +74,13 @@ public:
     // Returns the camera pose (empty if tracking fails).
     cv::Mat TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double &timestamp);
 
+    cv::Mat ImageToPub();
     // Proccess the given monocular frame
     // Input images: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
     // Returns the camera pose (empty if tracking fails).
     cv::Mat TrackMonocular(const cv::Mat &im, const double &timestamp);
+
+    cv::Mat TrackMonocular(const cv::Mat &im, const std::vector<IMUData> &vimu, const double &timestamp);
 
     // This stops local mapping thread (map building) and performs only camera tracking.
     void ActivateLocalizationMode();
@@ -84,7 +89,7 @@ public:
 
     // Reset the system (clear map)
     void Reset();
-
+    void Rescale(float scale);
     // All threads will be requested to finish.
     // It waits until all threads have finished.
     // This function must be called before saving the trajectory.
@@ -112,6 +117,8 @@ public:
         //thanabadee edited
     int GetNumTrack();
     int GetState();
+
+    Map *GetMap();
 private:
 
     // Input sensor

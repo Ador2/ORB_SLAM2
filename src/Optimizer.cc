@@ -34,10 +34,174 @@
 
 #include<mutex>
 
+#include "IMU/configparam.h"
+#include "IMU/g2otypes.h"
+#include "Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.h"
+#include "Thirdparty/g2o/g2o/core/optimization_algorithm_with_hessian.h"
+#include "Thirdparty/g2o/g2o/solvers/linear_solver_cholmod.h"
+
 namespace ORB_SLAM2
 {
 
+Vector3d Optimizer::OptimizeInitialGyroBias(const std::vector<Frame> &vFrames)
+{
+    //size_t N = vpKFs.size();
+    Matrix4d Tbc = ConfigParam::GetEigTbc();
+    Matrix3d Rcb = Tbc.topLeftCorner(3,3).transpose();
 
+    // Setup optimizer
+    g2o::SparseOptimizer optimizer;
+    g2o::BlockSolverX::LinearSolverType * linearSolver;
+
+    linearSolver = new g2o::LinearSolverEigen<g2o::BlockSolverX::PoseMatrixType>();
+
+    g2o::BlockSolverX * solver_ptr = new g2o::BlockSolverX(linearSolver);
+
+    g2o::OptimizationAlgorithmGaussNewton* solver = new g2o::OptimizationAlgorithmGaussNewton(solver_ptr);
+    //g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg(solver_ptr);
+    optimizer.setAlgorithm(solver);
+
+    // Add vertex of gyro bias, to optimizer graph
+    g2o::VertexGyrBias * vBiasg = new g2o::VertexGyrBias();
+    vBiasg->setEstimate(Eigen::Vector3d::Zero());
+    vBiasg->setId(0);
+    optimizer.addVertex(vBiasg);
+
+    // Add unary edges for gyro bias vertex
+    for(size_t i=0; i<vFrames.size(); i++)
+    {
+        // Only 19 edges between 20 Frames
+        if(i==0)
+            continue;
+
+        const Frame& Fi = vFrames[i-1];
+        const Frame& Fj = vFrames[i];
+
+        cv::Mat Tiw = Fi.mTcw;      // pose of previous KF
+        Eigen::Matrix3d Rwci = Converter::toMatrix3d(Tiw.rowRange(0,3).colRange(0,3).t());
+        cv::Mat Tjw = Fj.mTcw;      // pose of this KF
+        Eigen::Matrix3d Rwcj = Converter::toMatrix3d(Tjw.rowRange(0,3).colRange(0,3).t());
+
+        //
+        IMUPreintegrator imupreint;
+        Fj.ComputeIMUPreIntSinceLastFrame(&Fi,imupreint);
+
+        g2o::EdgeGyrBias * eBiasg = new g2o::EdgeGyrBias();
+        eBiasg->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
+        // measurement is not used in EdgeGyrBias
+        eBiasg->dRbij = imupreint.getDeltaR();
+        eBiasg->J_dR_bg = imupreint.getJRBiasg();
+        eBiasg->Rwbi = Rwci*Rcb;
+        eBiasg->Rwbj = Rwcj*Rcb;
+        eBiasg->setInformation(Eigen::Matrix3d::Identity());
+        optimizer.addEdge(eBiasg);
+    }
+
+    // It's actualy a linear estimator, so 1 iteration is enough.
+    //optimizer.setVerbose(true);
+    optimizer.initializeOptimization();
+    optimizer.optimize(1);
+
+    g2o::VertexGyrBias * vBgEst = static_cast<g2o::VertexGyrBias*>(optimizer.vertex(0));
+
+    return vBgEst->estimate();
+}
+Vector3d Optimizer::OptimizeInitialGyroBias(const std::list<KeyFrame *> &lLocalKeyFrames)
+{
+    return OptimizeInitialGyroBias(std::vector<KeyFrame*>(lLocalKeyFrames.begin(),lLocalKeyFrames.end()));
+}
+
+Vector3d Optimizer::OptimizeInitialGyroBias(const std::vector<KeyFrame *> &vpKFs)
+{
+    //size_t N = vpKFs.size();
+    Matrix4d Tbc = ConfigParam::GetEigTbc();
+    Matrix3d Rcb = Tbc.topLeftCorner(3,3).transpose();
+
+    // Setup optimizer
+    g2o::SparseOptimizer optimizer;
+    g2o::BlockSolverX::LinearSolverType * linearSolver;
+
+    linearSolver = new g2o::LinearSolverEigen<g2o::BlockSolverX::PoseMatrixType>();
+
+    g2o::BlockSolverX * solver_ptr = new g2o::BlockSolverX(linearSolver);
+
+    g2o::OptimizationAlgorithmGaussNewton* solver = new g2o::OptimizationAlgorithmGaussNewton(solver_ptr);
+    //g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg(solver_ptr);
+    optimizer.setAlgorithm(solver);
+
+    // Add vertex of gyro bias, to optimizer graph
+    g2o::VertexGyrBias * vBiasg = new g2o::VertexGyrBias();
+    vBiasg->setEstimate(Eigen::Vector3d::Zero());
+    vBiasg->setId(0);
+    optimizer.addVertex(vBiasg);
+
+    // Add unary edges for gyro bias vertex
+    KeyFrame* pPrevKF0 = vpKFs.front();
+    for(std::vector<KeyFrame*>::const_iterator lit=vpKFs.begin(), lend=vpKFs.end(); lit!=lend; lit++)
+    {
+        KeyFrame* pKF = *lit;
+        // Ignore the first KF
+        if(pKF == vpKFs.front())
+            continue;
+
+        KeyFrame* pPrevKF = pKF->GetPrevKeyFrame();
+        cv::Mat Twi = pPrevKF->GetPoseInverse();    // pose of previous KF
+        Eigen::Matrix3d Rwci = Converter::toMatrix3d(Twi.rowRange(0,3).colRange(0,3));
+        cv::Mat Twj = pKF->GetPoseInverse();        // pose of this KF
+        Eigen::Matrix3d Rwcj = Converter::toMatrix3d(Twj.rowRange(0,3).colRange(0,3));
+
+        //
+        const IMUPreintegrator& imupreint = pKF->GetIMUPreInt();
+        g2o::EdgeGyrBias * eBiasg = new g2o::EdgeGyrBias();
+        eBiasg->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(0)));
+        // measurement is not used in EdgeGyrBias
+        eBiasg->dRbij = imupreint.getDeltaR();
+        eBiasg->J_dR_bg = imupreint.getJRBiasg();
+        eBiasg->Rwbi = Rwci*Rcb;
+        eBiasg->Rwbj = Rwcj*Rcb;
+        eBiasg->setInformation(Eigen::Matrix3d::Identity());
+        optimizer.addEdge(eBiasg);
+
+        // Test log
+        if(pPrevKF0 != pPrevKF) cerr<<"pPrevKF in list != pKF->pPrevKF? in OptimizeInitialGyroBias"<<endl;
+        pPrevKF0 = pKF;
+
+        // Debug log
+        //cout<<"dRbij in pre-int: "<<endl<<eBiasg->dRbij<<endl;
+        //cout<<"Rwbi'*Rwbj by ORBSLAM: "<<endl<<eBiasg->Rwbi.transpose()*eBiasg->Rwbj<<endl;
+    }
+
+    // It's actualy a linear estimator, so 1 iteration is enough.
+    //optimizer.setVerbose(true);
+    optimizer.initializeOptimization();
+    optimizer.optimize(1);
+
+    g2o::VertexGyrBias * vBgEst = static_cast<g2o::VertexGyrBias*>(optimizer.vertex(0));
+
+    return vBgEst->estimate();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------
 void Optimizer::GlobalBundleAdjustemnt(Map* pMap, int nIterations, bool* pbStopFlag, const unsigned long nLoopKF, const bool bRobust)
 {
     vector<KeyFrame*> vpKFs = pMap->GetAllKeyFrames();

@@ -1,23 +1,23 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp
+Change Dir: /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTryCompileExec3022612468/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec3022612468.dir/build.make CMakeFiles/cmTryCompileExec3022612468.dir/build
-make[1]: Entering directory `/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec3022612468.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTryCompileExec3022612468.dir/CheckSymbolExists.c.o   -c /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTryCompileExec3022612468
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec3022612468.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTryCompileExec3022612468.dir/CheckSymbolExists.c.o  -o cmTryCompileExec3022612468 -rdynamic 
-CMakeFiles/cmTryCompileExec3022612468.dir/CheckSymbolExists.c.o: In function `main':
+Run Build Command:"/usr/bin/make" "cmTryCompileExec335598235/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec335598235.dir/build.make CMakeFiles/cmTryCompileExec335598235.dir/build
+make[1]: Entering directory `/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec335598235.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTryCompileExec335598235.dir/CheckSymbolExists.c.o   -c /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTryCompileExec335598235
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec335598235.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTryCompileExec335598235.dir/CheckSymbolExists.c.o  -o cmTryCompileExec335598235 -rdynamic 
+CMakeFiles/cmTryCompileExec335598235.dir/CheckSymbolExists.c.o: In function `main':
 CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-make[1]: *** [cmTryCompileExec3022612468] Error 1
-make[1]: Leaving directory `/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
-make: *** [cmTryCompileExec3022612468/fast] Error 2
+make[1]: *** [cmTryCompileExec335598235] Error 1
+make[1]: Leaving directory `/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
+make: *** [cmTryCompileExec335598235/fast] Error 2
 
-File /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -33,21 +33,21 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp
+Change Dir: /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTryCompileExec2992446921/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2992446921.dir/build.make CMakeFiles/cmTryCompileExec2992446921.dir/build
-make[1]: Entering directory `/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec2992446921.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec2992446921.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.2/Modules/CheckFunctionExists.c
-Linking C executable cmTryCompileExec2992446921
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2992446921.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec2992446921.dir/CheckFunctionExists.c.o  -o cmTryCompileExec2992446921 -rdynamic -lpthreads 
+Run Build Command:"/usr/bin/make" "cmTryCompileExec291138565/fast"
+/usr/bin/make -f CMakeFiles/cmTryCompileExec291138565.dir/build.make CMakeFiles/cmTryCompileExec291138565.dir/build
+make[1]: Entering directory `/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
+/usr/bin/cmake -E cmake_progress_report /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec291138565.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTryCompileExec291138565.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.2/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec291138565
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec291138565.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTryCompileExec291138565.dir/CheckFunctionExists.c.o  -o cmTryCompileExec291138565 -rdynamic -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [cmTryCompileExec2992446921] Error 1
-make[1]: Leaving directory `/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
-make: *** [cmTryCompileExec2992446921/fast] Error 2
+make[1]: *** [cmTryCompileExec291138565] Error 1
+make[1]: Leaving directory `/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/CMakeTmp'
+make: *** [cmTryCompileExec291138565/fast] Error 2
 
 

@@ -42,10 +42,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2
+CMAKE_SOURCE_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build
+CMAKE_BINARY_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -62,8 +62,8 @@ install/strip/fast: install/strip
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -113,9 +113,9 @@ install/local/fast: install/local
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -156,17 +156,17 @@ Mono/fast:
 .PHONY : Mono/fast
 
 #=============================================================================
-# Target rules for targets named RGBD
+# Target rules for targets named MonoVI
 
 # Build rule for target.
-RGBD: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 RGBD
-.PHONY : RGBD
+MonoVI: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MonoVI
+.PHONY : MonoVI
 
 # fast build rule for target.
-RGBD/fast:
-	$(MAKE) -f CMakeFiles/RGBD.dir/build.make CMakeFiles/RGBD.dir/build
-.PHONY : RGBD/fast
+MonoVI/fast:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/build
+.PHONY : MonoVI/fast
 
 #=============================================================================
 # Target rules for targets named ROSBUILD_genmsg_cpp
@@ -219,19 +219,6 @@ ROSBUILD_gensrv_lisp: cmake_check_build_system
 ROSBUILD_gensrv_lisp/fast:
 	$(MAKE) -f CMakeFiles/ROSBUILD_gensrv_lisp.dir/build.make CMakeFiles/ROSBUILD_gensrv_lisp.dir/build
 .PHONY : ROSBUILD_gensrv_lisp/fast
-
-#=============================================================================
-# Target rules for targets named Stereo
-
-# Build rule for target.
-Stereo: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Stereo
-.PHONY : Stereo
-
-# fast build rule for target.
-Stereo/fast:
-	$(MAKE) -f CMakeFiles/Stereo.dir/build.make CMakeFiles/Stereo.dir/build
-.PHONY : Stereo/fast
 
 #=============================================================================
 # Target rules for targets named _catkin_empty_exported_target
@@ -467,6 +454,30 @@ gtest_main/fast:
 	$(MAKE) -f gtest/CMakeFiles/gtest_main.dir/build.make gtest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
+src/MsgSync/MsgSynchronizer.o: src/MsgSync/MsgSynchronizer.cpp.o
+.PHONY : src/MsgSync/MsgSynchronizer.o
+
+# target to build an object file
+src/MsgSync/MsgSynchronizer.cpp.o:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/MsgSync/MsgSynchronizer.cpp.o
+.PHONY : src/MsgSync/MsgSynchronizer.cpp.o
+
+src/MsgSync/MsgSynchronizer.i: src/MsgSync/MsgSynchronizer.cpp.i
+.PHONY : src/MsgSync/MsgSynchronizer.i
+
+# target to preprocess a source file
+src/MsgSync/MsgSynchronizer.cpp.i:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/MsgSync/MsgSynchronizer.cpp.i
+.PHONY : src/MsgSync/MsgSynchronizer.cpp.i
+
+src/MsgSync/MsgSynchronizer.s: src/MsgSync/MsgSynchronizer.cpp.s
+.PHONY : src/MsgSync/MsgSynchronizer.s
+
+# target to generate assembly for a file
+src/MsgSync/MsgSynchronizer.cpp.s:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/MsgSync/MsgSynchronizer.cpp.s
+.PHONY : src/MsgSync/MsgSynchronizer.cpp.s
+
 src/ros_mono.o: src/ros_mono.cc.o
 .PHONY : src/ros_mono.o
 
@@ -491,53 +502,29 @@ src/ros_mono.cc.s:
 	$(MAKE) -f CMakeFiles/Mono.dir/build.make CMakeFiles/Mono.dir/src/ros_mono.cc.s
 .PHONY : src/ros_mono.cc.s
 
-src/ros_rgbd.o: src/ros_rgbd.cc.o
-.PHONY : src/ros_rgbd.o
+src/ros_mono_vi_init.o: src/ros_mono_vi_init.cc.o
+.PHONY : src/ros_mono_vi_init.o
 
 # target to build an object file
-src/ros_rgbd.cc.o:
-	$(MAKE) -f CMakeFiles/RGBD.dir/build.make CMakeFiles/RGBD.dir/src/ros_rgbd.cc.o
-.PHONY : src/ros_rgbd.cc.o
+src/ros_mono_vi_init.cc.o:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/ros_mono_vi_init.cc.o
+.PHONY : src/ros_mono_vi_init.cc.o
 
-src/ros_rgbd.i: src/ros_rgbd.cc.i
-.PHONY : src/ros_rgbd.i
-
-# target to preprocess a source file
-src/ros_rgbd.cc.i:
-	$(MAKE) -f CMakeFiles/RGBD.dir/build.make CMakeFiles/RGBD.dir/src/ros_rgbd.cc.i
-.PHONY : src/ros_rgbd.cc.i
-
-src/ros_rgbd.s: src/ros_rgbd.cc.s
-.PHONY : src/ros_rgbd.s
-
-# target to generate assembly for a file
-src/ros_rgbd.cc.s:
-	$(MAKE) -f CMakeFiles/RGBD.dir/build.make CMakeFiles/RGBD.dir/src/ros_rgbd.cc.s
-.PHONY : src/ros_rgbd.cc.s
-
-src/ros_stereo.o: src/ros_stereo.cc.o
-.PHONY : src/ros_stereo.o
-
-# target to build an object file
-src/ros_stereo.cc.o:
-	$(MAKE) -f CMakeFiles/Stereo.dir/build.make CMakeFiles/Stereo.dir/src/ros_stereo.cc.o
-.PHONY : src/ros_stereo.cc.o
-
-src/ros_stereo.i: src/ros_stereo.cc.i
-.PHONY : src/ros_stereo.i
+src/ros_mono_vi_init.i: src/ros_mono_vi_init.cc.i
+.PHONY : src/ros_mono_vi_init.i
 
 # target to preprocess a source file
-src/ros_stereo.cc.i:
-	$(MAKE) -f CMakeFiles/Stereo.dir/build.make CMakeFiles/Stereo.dir/src/ros_stereo.cc.i
-.PHONY : src/ros_stereo.cc.i
+src/ros_mono_vi_init.cc.i:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/ros_mono_vi_init.cc.i
+.PHONY : src/ros_mono_vi_init.cc.i
 
-src/ros_stereo.s: src/ros_stereo.cc.s
-.PHONY : src/ros_stereo.s
+src/ros_mono_vi_init.s: src/ros_mono_vi_init.cc.s
+.PHONY : src/ros_mono_vi_init.s
 
 # target to generate assembly for a file
-src/ros_stereo.cc.s:
-	$(MAKE) -f CMakeFiles/Stereo.dir/build.make CMakeFiles/Stereo.dir/src/ros_stereo.cc.s
-.PHONY : src/ros_stereo.cc.s
+src/ros_mono_vi_init.cc.s:
+	$(MAKE) -f CMakeFiles/MonoVI.dir/build.make CMakeFiles/MonoVI.dir/src/ros_mono_vi_init.cc.s
+.PHONY : src/ros_mono_vi_init.cc.s
 
 # Help Target
 help:
@@ -555,9 +542,9 @@ help:
 	@echo "... rospack_genmsg"
 	@echo "... test-results-run"
 	@echo "... ROSBUILD_gensrv_lisp"
-	@echo "... RGBD"
 	@echo "... rosbuild_clean-test-results"
 	@echo "... rosbuild_precompile"
+	@echo "... MonoVI"
 	@echo "... _catkin_empty_exported_target"
 	@echo "... list_install_components"
 	@echo "... test-results"
@@ -571,20 +558,19 @@ help:
 	@echo "... ROSBUILD_genmsg_cpp"
 	@echo "... clean_test_results"
 	@echo "... run_tests"
-	@echo "... Stereo"
 	@echo "... ROSBUILD_gensrv_cpp"
 	@echo "... install/local"
 	@echo "... gtest"
 	@echo "... gtest_main"
+	@echo "... src/MsgSync/MsgSynchronizer.o"
+	@echo "... src/MsgSync/MsgSynchronizer.i"
+	@echo "... src/MsgSync/MsgSynchronizer.s"
 	@echo "... src/ros_mono.o"
 	@echo "... src/ros_mono.i"
 	@echo "... src/ros_mono.s"
-	@echo "... src/ros_rgbd.o"
-	@echo "... src/ros_rgbd.i"
-	@echo "... src/ros_rgbd.s"
-	@echo "... src/ros_stereo.o"
-	@echo "... src/ros_stereo.i"
-	@echo "... src/ros_stereo.s"
+	@echo "... src/ros_mono_vi_init.o"
+	@echo "... src/ros_mono_vi_init.i"
+	@echo "... src/ros_mono_vi_init.s"
 .PHONY : help
 
 

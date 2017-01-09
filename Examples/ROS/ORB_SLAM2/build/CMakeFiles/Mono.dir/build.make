@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2
+CMAKE_SOURCE_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build
+CMAKE_BINARY_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Mono.dir/depend.make
@@ -56,10 +56,10 @@ CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/cpp_common/package.
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/rostime/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/roscpp_traits/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/roscpp_serialization/package.xml
+CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/catkin/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/genmsg/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/genpy/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/message_runtime/package.xml
-CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/catkin/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/gencpp/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/genlisp/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/message_generation/package.xml
@@ -92,8 +92,8 @@ CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/rosservice/package.
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/roswtf/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/sensor_msgs/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/actionlib_msgs/package.xml
-CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/tf2_msgs/package.xml
-CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/tf2/package.xml
+CMakeFiles/Mono.dir/src/ros_mono.cc.o: /home/fx/catkin_ws/src/geometry2/tf2_msgs/package.xml
+CMakeFiles/Mono.dir/src/ros_mono.cc.o: /home/fx/catkin_ws/src/geometry2/tf2/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/rostest/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/actionlib/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/tf2_py/package.xml
@@ -103,17 +103,17 @@ CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/class_loader/packag
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/pluginlib/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/image_transport/package.xml
 CMakeFiles/Mono.dir/src/ros_mono.cc.o: /opt/ros/indigo/share/cv_bridge/package.xml
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/Mono.dir/src/ros_mono.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Mono.dir/src/ros_mono.cc.o -c /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/Mono.dir/src/ros_mono.cc.o -c /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc
 
 CMakeFiles/Mono.dir/src/ros_mono.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Mono.dir/src/ros_mono.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc > CMakeFiles/Mono.dir/src/ros_mono.cc.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc > CMakeFiles/Mono.dir/src/ros_mono.cc.i
 
 CMakeFiles/Mono.dir/src/ros_mono.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Mono.dir/src/ros_mono.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc -o CMakeFiles/Mono.dir/src/ros_mono.cc.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc -o CMakeFiles/Mono.dir/src/ros_mono.cc.s
 
 CMakeFiles/Mono.dir/src/ros_mono.cc.o.requires:
 .PHONY : CMakeFiles/Mono.dir/src/ros_mono.cc.o.requires
@@ -133,21 +133,48 @@ Mono_EXTERNAL_OBJECTS =
 
 ../Mono: CMakeFiles/Mono.dir/src/ros_mono.cc.o
 ../Mono: CMakeFiles/Mono.dir/build.make
+../Mono: /usr/lib/x86_64-linux-gnu/libtinyxml.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_signals.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
+../Mono: /usr/lib/libPocoFoundation.so
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_highgui.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_flann.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_core.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
+../Mono: /usr/lib/liblog4cxx.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_regex.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_system.so
+../Mono: /usr/lib/x86_64-linux-gnu/libboost_thread.so
+../Mono: /usr/lib/x86_64-linux-gnu/libpthread.so
+../Mono: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_videostab.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_superres.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_stitching.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_contrib.so.2.4.8
-../Mono: /home/fx/Pangolin/build/src/libpangolin.so
+../Mono: /home/fx/catkin_ws/Pangolin/build/src/libpangolin.so
 ../Mono: ../../../../Thirdparty/DBoW2/lib/libDBoW2.so
 ../Mono: ../../../../Thirdparty/g2o/lib/libg2o.so
 ../Mono: ../../../../lib/libORB_SLAM2.so
-../Mono: /usr/lib/x86_64-linux-gnu/libopencv_nonfree.so.2.4.8
-../Mono: /usr/lib/x86_64-linux-gnu/libopencv_ocl.so.2.4.8
-../Mono: /usr/lib/x86_64-linux-gnu/libopencv_gpu.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.2.4.8
-../Mono: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_legacy.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_video.so.2.4.8
+../Mono: /usr/lib/x86_64-linux-gnu/libopencv_objdetect.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_ml.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_calib3d.so.2.4.8
 ../Mono: /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.2.4.8
@@ -162,6 +189,11 @@ Mono_EXTERNAL_OBJECTS =
 ../Mono: /usr/lib/x86_64-linux-gnu/libX11.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libXext.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libGLEW.so
+../Mono: /usr/lib/x86_64-linux-gnu/libSM.so
+../Mono: /usr/lib/x86_64-linux-gnu/libICE.so
+../Mono: /usr/lib/x86_64-linux-gnu/libX11.so
+../Mono: /usr/lib/x86_64-linux-gnu/libXext.so
+../Mono: /usr/lib/x86_64-linux-gnu/libGLEW.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libpython2.7.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libdc1394.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libavcodec.so
@@ -169,7 +201,6 @@ Mono_EXTERNAL_OBJECTS =
 ../Mono: /usr/lib/x86_64-linux-gnu/libavutil.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libswscale.so
 ../Mono: /usr/lib/libOpenNI.so
-../Mono: /usr/lib/libOpenNI2.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libpng.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libz.so
 ../Mono: /usr/lib/x86_64-linux-gnu/libjpeg.so
@@ -191,6 +222,6 @@ CMakeFiles/Mono.dir/clean:
 .PHONY : CMakeFiles/Mono.dir/clean
 
 CMakeFiles/Mono.dir/depend:
-	cd /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2 /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2 /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/Mono.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2 /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2 /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/Mono.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Mono.dir/depend
 

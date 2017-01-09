@@ -24,26 +24,36 @@
 #include<fstream>
 #include<chrono>
 
-#include<ros/ros.h>
-#include<tf/transform_broadcaster.h>        //thnabadee edited
-#include<beginner_tutorials/odom_data.h>  //thnabadee edited
+#include <ros/ros.h>
+#include <tf/transform_broadcaster.h>        //thnabadee edited
+#include <beginner_tutorials/odom_data.h>  //thnabadee edited
+#include <std_msgs/Bool.h> 
+#include <image_transport/image_transport.h>
+#include <pcl/point_cloud.h>  
+#include <pcl_conversions/pcl_conversions.h>  
+#include <sensor_msgs/PointCloud2.h> 
+
 
 #include <cv_bridge/cv_bridge.h>
 
-#include<opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include "../../../include/System.h"
 
 using namespace std;
 
    
 ros::Publisher publisher_pose;
+ros::Publisher pcl_pub;
+
+image_transport::Publisher mImagePub;
 class ImageGrabber
 {
 public:
     ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM){}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
+    void reset_callback(const std_msgs::BoolConstPtr& msg);
 
     ORB_SLAM2::System* mpSLAM;
 
@@ -52,7 +62,9 @@ public:
     int LOST_COUNT;
     beginner_tutorials::odom_data export_odom_data;
     // Transfor broadcaster (for visualization in rviz)
-    tf::TransformBroadcaster mTfBr;
+private:
+    pcl::PointCloud<pcl::PointXYZ> cloud;  
+    sensor_msgs::PointCloud2 output;  
     //-----------------------------------------
 };
 
@@ -75,7 +87,11 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nodeHandler;
     ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    ros::Subscriber sub_reset = nodeHandler.subscribe("/slam_reset", 1, &ImageGrabber::reset_callback,&igb);
+    pcl_pub = nodeHandler.advertise<sensor_msgs::PointCloud2> ("/ORB_SLAM2/Cloud", 10,true);
     publisher_pose = nodeHandler.advertise<beginner_tutorials::odom_data>("slam", 10);//thanabadee edited
+    image_transport::ImageTransport it(nodeHandler);
+    mImagePub = it.advertise("/Frame",10);
     ros::spin();
 
     // Stop all threads
@@ -88,7 +104,13 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
+void ImageGrabber::reset_callback(const std_msgs::BoolConstPtr& msg)
+{
+    if(msg->data) {
+        mpSLAM->Reset();
+        printf("SLAM reset by topic\n");
+    }
+}
 void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 {
     // Copy the ros image message to cv::Mat.
@@ -104,7 +126,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     }
 
     //thanabadee edited-------------------------------------------------------------------------------
-    ros::Time currenttime=ros::Time::now();
+    ros::Time currenttime=msg->header.stamp;
     cv::Mat mTcw = mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
     export_odom_data.odom_state = mpSLAM->GetState();
     if(export_odom_data.odom_state==3) {
@@ -125,23 +147,35 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
         tf::Matrix3x3 M(Rwc.at<float>(0,0),Rwc.at<float>(0,1),Rwc.at<float>(0,2),
                         Rwc.at<float>(1,0),Rwc.at<float>(1,1),Rwc.at<float>(1,2),
                         Rwc.at<float>(2,0),Rwc.at<float>(2,1),Rwc.at<float>(2,2));
-        tf::Vector3 V(twc.at<float>(0), twc.at<float>(1), twc.at<float>(2));
+        // tf::Vector3 V(twc.at<float>(0), twc.at<float>(1), twc.at<float>(2));
 
-        tf::Transform tfTcw(M,V);
+        tf::Quaternion Q;
+        M.getRotation(Q);
+        Q.normalize();
+        tf::Quaternion q_vc_rebuild(-Q.z(),
+           Q.x(),
+           Q.y(),
+           -Q.w());
+        tf::Matrix3x3 M_rebuild;
+        M_rebuild.setRotation(q_vc_rebuild);
 
-        tf::Quaternion Q = tfTcw.getRotation();
+        tf::Vector3 V_rebuild(twc.at<float>(2), -twc.at<float>(0), -twc.at<float>(1));
+
+
+        tf::Transform tfTcw(M_rebuild,V_rebuild);
+
   //       ROS_INFO_STREAM("Cam" << " :\n\tquaternion:\n\t\tw: " << Q.getW() << "\n\t\tx: " << Q.getX() <<
   // "\n\t\ty: " << Q.getY() << "\n\t\tz: " << Q.getZ() << "\n\n"); 
   //       ROS_INFO_STREAM("Cam" << " :\n\tposition:\n\t\tx: " << V.x() <<
   // "\n\t\ty: " << V.y() << "\n\t\tz: " << V.z() << "\n\n"); 
         
-        export_odom_data.pose.pose.position.x = V.x();
-        export_odom_data.pose.pose.position.y = V.y();
-        export_odom_data.pose.pose.position.z = V.z();
-        export_odom_data.pose.pose.orientation.x = Q.getX();
-        export_odom_data.pose.pose.orientation.y = Q.getY();
-        export_odom_data.pose.pose.orientation.z = Q.getZ();
-        export_odom_data.pose.pose.orientation.w = Q.getW();
+        export_odom_data.pose.pose.position.x = V_rebuild.x();
+        export_odom_data.pose.pose.position.y = V_rebuild.y();
+        export_odom_data.pose.pose.position.z = V_rebuild.z();
+        export_odom_data.pose.pose.orientation.x = q_vc_rebuild.getX();
+        export_odom_data.pose.pose.orientation.y = q_vc_rebuild.getY();
+        export_odom_data.pose.pose.orientation.z = q_vc_rebuild.getZ();
+        export_odom_data.pose.pose.orientation.w = q_vc_rebuild.getW();
         export_odom_data.track_count = mpSLAM->GetNumTrack();
         
 
@@ -161,6 +195,55 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     export_odom_data.lost_count = LOST_COUNT;
     publisher_pose.publish(export_odom_data);//thanabadee edited
     //thanabadee edited-------------------------------------------------------------------------------
+
+    if(mImagePub.getNumSubscribers()) {
+        cv::Mat im = mpSLAM->ImageToPub();
+        cv_bridge::CvImage rosImage;
+        rosImage.image = im.clone();
+        rosImage.header.stamp = currenttime;
+        rosImage.header.frame_id ="Camera";
+        rosImage.encoding = "bgr8";
+    
+        mImagePub.publish(rosImage.toImageMsg());
+    }
+
+
+
+
+    cloud.width = mpSLAM->GetMap()->GetReferenceMapPoints().size();  
+    cloud.height = 1;  
+    cloud.points.resize(cloud.width * cloud.height); 
+    int temp=0;  
+    for(auto mp: mpSLAM->GetMap()->GetReferenceMapPoints())  
+    {
+      cv::Mat wp = mp->GetWorldPos();
+      cloud.points[temp].x = wp.at<float>(2);           // pos x: float
+      cloud.points[temp].y = -wp.at<float>(0);           // pos y: float
+      cloud.points[temp].z = -wp.at<float>(1);           // pos z: float
+      temp++;
+    }
+
+    pcl::toROSMsg(cloud, output);  
+    output.header.stamp = currenttime;
+    output.header.frame_id = "vision";
+    pcl_pub.publish(output); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ros::spinOnce();
+
+
 }
 
 

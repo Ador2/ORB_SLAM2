@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/setup.sh
+    local-name: /home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/devel/setup.sh

@@ -28,6 +28,10 @@
 #include "KeyFrameDatabase.h"
 
 #include <mutex>
+#include <time.h>
+
+#include "IMU/imudata.h"
+#include "IMU/configparam.h"
 
 
 namespace ORB_SLAM2
@@ -40,7 +44,48 @@ class Map;
 class LocalMapping
 {
 public:
-    LocalMapping(Map* pMap, const float bMonocular);
+    ConfigParam* mpParams;
+
+    // KeyFrames in Local Window, for Local BA
+    // Insert in ProcessNewKeyFrame()
+    void AddToLocalWindow(KeyFrame* pKF);
+    void DeleteBadInLocalWindow(void);
+
+    bool TryInitVIO(void);
+    void RecomputeIMUBiasAndCurrentNavstate(/*NavState& nscur*/);
+    bool GetVINSInited(void);
+    void SetVINSInited(bool flag);
+
+    bool GetFirstVINSInited(void);
+    void SetFirstVINSInited(bool flag);
+
+    cv::Mat GetGravityVec(void);
+
+    bool GetMapUpdateFlagForTracking();
+    void SetMapUpdateFlagInTracking(bool bflag);
+    KeyFrame* GetMapUpdateKF();
+
+protected:
+    double mnStartTime;
+    bool mbFirstTry;
+    double mnVINSInitScale;
+    cv::Mat mGravityVec; // gravity vector in world frame
+
+    std::mutex mMutexVINSInitFlag;
+    bool mbVINSInited;
+
+    std::mutex mMutexFirstVINSInitFlag;
+    bool mbFirstVINSInited;
+
+    unsigned int mnLocalWindowSize;
+    std::list<KeyFrame*> mlLocalKeyFrames;
+
+    std::mutex mMutexMapUpdateFlag;
+    bool mbMapUpdateFlagForTracking;
+    KeyFrame* mpMapUpdateKF;
+
+public:
+    LocalMapping(Map *pMap, const float bMonocular, ConfigParam* pParams);
 
     void SetLoopCloser(LoopClosing* pLoopCloser);
 

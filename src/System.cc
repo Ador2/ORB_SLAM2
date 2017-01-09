@@ -27,6 +27,8 @@
 #include <iomanip>
 #include <time.h>
 
+#include "IMU/configparam.h"
+
 bool has_suffix(const std::string &str, const std::string &suffix) {
   std::size_t index = str.find(suffix, str.size() - suffix.size());
   return (index != std::string::npos);
@@ -81,6 +83,9 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     printf("Vocabulary loaded in %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
 
+
+    ConfigParam config(strSettingsFile);
+
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
@@ -97,7 +102,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
                              mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
     //Initialize the Local Mapping thread and launch
-    mpLocalMapper = new LocalMapping(mpMap, mSensor==MONOCULAR);
+    mpLocalMapper = new LocalMapping(mpMap, mSensor==MONOCULAR,&config);
     mptLocalMapping = new thread(&ORB_SLAM2::LocalMapping::Run,mpLocalMapper);
 
     //Initialize the Loop Closing thread and launch
@@ -211,7 +216,10 @@ cv::Mat System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const doub
 
     return mpTracker->GrabImageRGBD(im,depthmap,timestamp);
 }
-
+cv::Mat System::ImageToPub() 
+{
+    return mpFrameDrawer->DrawFrame();
+}
 cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
 {
     if(mSensor!=MONOCULAR)
@@ -225,6 +233,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
         unique_lock<mutex> lock(mMutexMode);
         if(mbActivateLocalizationMode)
         {
+
             mpLocalMapper->RequestStop();
 
             // Wait until Local Mapping has effectively stopped
@@ -256,6 +265,55 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
 
     return mpTracker->GrabImageMonocular(im,timestamp);
 }
+cv::Mat System::TrackMonocular(const cv::Mat &im, const std::vector<IMUData> &vimu, const double &timestamp)
+{
+    if(mSensor!=MONOCULAR)
+    {
+        cerr << "ERROR: you called TrackMonocular but input sensor was not set to Monocular." << endl;
+        exit(-1);
+    }
+
+    // Check mode change
+    {
+        unique_lock<mutex> lock(mMutexMode);
+        if(mbActivateLocalizationMode)
+        {
+
+            mpLocalMapper->RequestStop();
+
+            // Wait until Local Mapping has effectively stopped
+            while(!mpLocalMapper->isStopped())
+            {
+                usleep(1000);
+            }
+
+            mpTracker->InformOnlyTracking(true);
+            mbActivateLocalizationMode = false;
+        }
+        if(mbDeactivateLocalizationMode)
+        {
+            mpTracker->InformOnlyTracking(false);
+            mpLocalMapper->Release();
+            mbDeactivateLocalizationMode = false;
+        }
+    }
+
+    // Check reset
+    {
+    unique_lock<mutex> lock(mMutexReset);
+    if(mbReset)
+    {
+        mpTracker->Reset();
+        mbReset = false;
+    }
+    }
+
+    return mpTracker->GrabImageMonocular(im,vimu,timestamp);
+}
+Map *System::GetMap()
+{
+    return mpMap;
+}
 
 void System::ActivateLocalizationMode()
 {
@@ -274,21 +332,29 @@ void System::Reset()
     unique_lock<mutex> lock(mMutexReset);
     mbReset = true;
 }
-
+void System::Rescale(float scale)
+{
+    printf("Clicked rescale\n");
+    mpMap->UpdateScale(scale);
+}
 void System::Shutdown()
 {
     mpLocalMapper->RequestFinish();
     mpLoopCloser->RequestFinish();
-    mpViewer->RequestFinish();
+    if(mpViewer)
+    {
+        mpViewer->RequestFinish();
+        while(!mpViewer->isFinished())
+            usleep(5000);
+    }
 
     // Wait until all thread have effectively stopped
-    while(!mpLocalMapper->isFinished() || !mpLoopCloser->isFinished()  ||
-          !mpViewer->isFinished()      || mpLoopCloser->isRunningGBA())
+    while(!mpLocalMapper->isFinished() || !mpLoopCloser->isFinished() || mpLoopCloser->isRunningGBA())
     {
         usleep(5000);
     }
 
-    pangolin::BindToContext("ORB-SLAM2: Map Viewer");
+    if(mpViewer) pangolin::BindToContext("ORB-SLAM2: Map Viewer");
 }
 
 void System::SaveTrajectoryTUM(const string &filename)

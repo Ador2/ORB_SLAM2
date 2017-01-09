@@ -1,1 +1,1 @@
-/home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/g2o.dir
+/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/g2o.dir

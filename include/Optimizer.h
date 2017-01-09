@@ -37,6 +37,13 @@ class LoopClosing;
 class Optimizer
 {
 public:
+    Vector3d static OptimizeInitialGyroBias(const std::list<KeyFrame*> &lLocalKeyFrames);
+    Vector3d static OptimizeInitialGyroBias(const std::vector<KeyFrame*> &vLocalKeyFrames);
+    Vector3d static OptimizeInitialGyroBias(const std::vector<Frame> &vFrames);
+
+
+
+  /////////////////////////////////////////////
     void static BundleAdjustment(const std::vector<KeyFrame*> &vpKF, const std::vector<MapPoint*> &vpMP,
                                  int nIterations = 5, bool *pbStopFlag=NULL, const unsigned long nLoopKF=0,
                                  const bool bRobust = true);

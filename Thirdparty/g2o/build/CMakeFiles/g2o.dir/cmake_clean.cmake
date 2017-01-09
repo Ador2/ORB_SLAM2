@@ -24,10 +24,12 @@ file(REMOVE_RECURSE
   "CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o"
+  "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o"
   "CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o"
   "CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o"
   "CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o"
   "CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o"
+  "CMakeFiles/g2o.dir/g2o/stuff/sparse_helper.cpp.o"
   "../lib/libg2o.pdb"
   "../lib/libg2o.so"
 )

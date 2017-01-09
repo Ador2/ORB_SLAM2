@@ -71,6 +71,8 @@ void Viewer::Run()
     pangolin::Var<bool> menuShowGraph("menu.Show Graph",true,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
+    pangolin::Var<bool> menuRescale_up("menu.Scale_up",false,false);
+    pangolin::Var<bool> menuRescale_down("menu.Scale_down",false,false);
 
     // Define Camera Render Object (for view / scene browsing)
     pangolin::OpenGlRenderState s_cam(
@@ -133,9 +135,9 @@ void Viewer::Run()
 
         pangolin::FinishFrame();
 
-        cv::Mat im = mpFrameDrawer->DrawFrame();
-        cv::imshow("ORB-SLAM2: Current Frame",im);
-        cv::waitKey(mT);
+        // cv::Mat im = mpFrameDrawer->DrawFrame();
+        // cv::imshow("ORB-SLAM2: Current Frame",im);
+        // cv::waitKey(mT);
 
         if(menuReset)
         {
@@ -151,7 +153,16 @@ void Viewer::Run()
             mpSystem->Reset();
             menuReset = false;
         }
-
+        if(menuRescale_up)
+        {
+            mpSystem->Rescale(1.1);
+            menuRescale_up = false;
+        }
+        if(menuRescale_down)
+        {
+            mpSystem->Rescale(0.9);
+            menuRescale_down = false;
+        }
         if(Stop())
         {
             while(isStopped())

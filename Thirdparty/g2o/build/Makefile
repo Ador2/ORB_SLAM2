@@ -42,18 +42,18 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o
+CMAKE_SOURCE_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build
+CMAKE_BINARY_DIR = /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/Dropbox/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -426,6 +426,30 @@ g2o/core/optimization_algorithm_factory.cpp.s:
 	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_factory.cpp.s
 .PHONY : g2o/core/optimization_algorithm_factory.cpp.s
 
+g2o/core/optimization_algorithm_gauss_newton.o: g2o/core/optimization_algorithm_gauss_newton.cpp.o
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.o
+
+# target to build an object file
+g2o/core/optimization_algorithm_gauss_newton.cpp.o:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.o
+
+g2o/core/optimization_algorithm_gauss_newton.i: g2o/core/optimization_algorithm_gauss_newton.cpp.i
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.i
+
+# target to preprocess a source file
+g2o/core/optimization_algorithm_gauss_newton.cpp.i:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.i
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.i
+
+g2o/core/optimization_algorithm_gauss_newton.s: g2o/core/optimization_algorithm_gauss_newton.cpp.s
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.s
+
+# target to generate assembly for a file
+g2o/core/optimization_algorithm_gauss_newton.cpp.s:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.s
+.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.s
+
 g2o/core/optimization_algorithm_levenberg.o: g2o/core/optimization_algorithm_levenberg.cpp.o
 .PHONY : g2o/core/optimization_algorithm_levenberg.o
 
@@ -690,6 +714,30 @@ g2o/stuff/property.cpp.s:
 	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/stuff/property.cpp.s
 .PHONY : g2o/stuff/property.cpp.s
 
+g2o/stuff/sparse_helper.o: g2o/stuff/sparse_helper.cpp.o
+.PHONY : g2o/stuff/sparse_helper.o
+
+# target to build an object file
+g2o/stuff/sparse_helper.cpp.o:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/stuff/sparse_helper.cpp.o
+.PHONY : g2o/stuff/sparse_helper.cpp.o
+
+g2o/stuff/sparse_helper.i: g2o/stuff/sparse_helper.cpp.i
+.PHONY : g2o/stuff/sparse_helper.i
+
+# target to preprocess a source file
+g2o/stuff/sparse_helper.cpp.i:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/stuff/sparse_helper.cpp.i
+.PHONY : g2o/stuff/sparse_helper.cpp.i
+
+g2o/stuff/sparse_helper.s: g2o/stuff/sparse_helper.cpp.s
+.PHONY : g2o/stuff/sparse_helper.s
+
+# target to generate assembly for a file
+g2o/stuff/sparse_helper.cpp.s:
+	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/stuff/sparse_helper.cpp.s
+.PHONY : g2o/stuff/sparse_helper.cpp.s
+
 g2o/stuff/string_tools.o: g2o/stuff/string_tools.cpp.o
 .PHONY : g2o/stuff/string_tools.o
 
@@ -858,6 +906,9 @@ help:
 	@echo "... g2o/core/optimization_algorithm_factory.o"
 	@echo "... g2o/core/optimization_algorithm_factory.i"
 	@echo "... g2o/core/optimization_algorithm_factory.s"
+	@echo "... g2o/core/optimization_algorithm_gauss_newton.o"
+	@echo "... g2o/core/optimization_algorithm_gauss_newton.i"
+	@echo "... g2o/core/optimization_algorithm_gauss_newton.s"
 	@echo "... g2o/core/optimization_algorithm_levenberg.o"
 	@echo "... g2o/core/optimization_algorithm_levenberg.i"
 	@echo "... g2o/core/optimization_algorithm_levenberg.s"
@@ -891,6 +942,9 @@ help:
 	@echo "... g2o/stuff/property.o"
 	@echo "... g2o/stuff/property.i"
 	@echo "... g2o/stuff/property.s"
+	@echo "... g2o/stuff/sparse_helper.o"
+	@echo "... g2o/stuff/sparse_helper.i"
+	@echo "... g2o/stuff/sparse_helper.s"
 	@echo "... g2o/stuff/string_tools.o"
 	@echo "... g2o/stuff/string_tools.i"
 	@echo "... g2o/stuff/string_tools.s"
