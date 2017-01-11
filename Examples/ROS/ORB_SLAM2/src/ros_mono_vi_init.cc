@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 
     ros::NodeHandle nodeHandler;
     ros::Subscriber sub_reset = nodeHandler.subscribe("/slam_reset", 1, &reset_callback);
-    ros::Subscriber imagesub = nodeHandler.subscribe("/image_repub", 200, &ORBVIO::MsgSynchronizer::imageCallback, &msgsync);
+    ros::Subscriber imagesub = nodeHandler.subscribe("/image_repub", 1, &ORBVIO::MsgSynchronizer::imageCallback, &msgsync);
     ros::Subscriber imusub = nodeHandler.subscribe("/imu_repub", 200, &ORBVIO::MsgSynchronizer::imuCallback, &msgsync);
 
 
@@ -175,6 +175,7 @@ int main(int argc, char **argv)
 
             ros::Time currenttime = imageMsg->header.stamp - ros::Duration(imageMsgDelaySec);
             odomOUT.odom_state = SLAM.GetState();
+            odomOUT.Scale_Inited = SLAM.GetVINSInited();
             if(odomOUT.odom_state==3) {
                 LOST_COUNT ++ ;
                 if(LOST_COUNT>30) {

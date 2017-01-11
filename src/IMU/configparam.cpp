@@ -44,6 +44,7 @@ ConfigParam::ConfigParam(std::string configfile)
                 Tbc_[4], Tbc_[5], Tbc_[6],
                 Tbc_[8], Tbc_[9], Tbc_[10];
         Eigen::Quaterniond qr(R);
+        std::cout<< "QUATERNION = "<< std::endl << qr.w() << std::endl<< qr.x() << std::endl<< qr.y() << std::endl<< qr.z() << std::endl <<std::endl;
         R = qr.normalized().toRotationMatrix();
         Eigen::Matrix<double,3,1> t( Tbc_[3], Tbc_[7], Tbc_[11]);
         _EigTbc = Eigen::Matrix4d::Identity();

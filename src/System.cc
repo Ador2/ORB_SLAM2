@@ -504,4 +504,7 @@ int System::GetNumTrack() {
 int System::GetState() {
     return mpTracker->mState;
 }
+bool System::GetVINSInited() {
+    return mpLocalMapper->GetVINSInited();
+}
 } //namespace ORB_SLAM

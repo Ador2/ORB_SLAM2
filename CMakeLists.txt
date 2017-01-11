@@ -64,8 +64,9 @@ src/KeyFrameDatabase.cc
 src/Sim3Solver.cc
 src/Initializer.cc
 src/Viewer.cc
+src/Camera.cc 
 
-
+include/Camera.h
 include/Frame.h
 include/KeyFrame.h
 include/Tracking.h

@@ -71,7 +71,7 @@ Vector3d Optimizer::OptimizeInitialGyroBias(const std::vector<Frame> &vFrames)
     for(size_t i=0; i<vFrames.size(); i++)
     {
         // Only 19 edges between 20 Frames
-        if(i==0)
+        if(i==0) 
             continue;
 
         const Frame& Fi = vFrames[i-1];

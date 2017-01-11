@@ -48,7 +48,32 @@ void Map::UpdateScale(const double &scale)
     }
     std::cout<<std::endl<<"... Map scale updated ..."<<std::endl<<std::endl;
 }
+// void Map::UpdateScale(const double &scale, const unsigned int LastStart)
+// {
+//     unique_lock<mutex> lock(mMutexMapUpdate);
+//     std::vector<KeyFrame*> AllKF = GetAllKeyFrames();
 
+
+//     std::vector<KeyFrame*> vdd= std::vector<KeyFrame*>(AllKF.begin()+LastStart,AllKF.end());
+
+
+// // for(vector<KeyFrame*>::const_iterator vit=vScaleGravityKF.begin(), vend=vScaleGravityKF.end(); vit!=vend; vit++)
+//     for(std::vector<KeyFrame*>::const_iterator sit=vdd.begin(), send=vdd.end(); sit!=send; sit++)
+//     {
+//         KeyFrame* pKF = *sit;
+//         cv::Mat Tcw = pKF->GetPose();
+//         cv::Mat tcw = Tcw.rowRange(0,3).col(3)*scale;
+//         tcw.copyTo(Tcw.rowRange(0,3).col(3));
+//         pKF->SetPose(Tcw);
+//     }
+//     static std::set<MapPoint*>::iterator LastStartMP=mspMapPoints.end();
+//     for(std::set<MapPoint*>::iterator sit=mspMapPoints.begin(), send=mspMapPoints.end(); sit!=send; sit++)
+//     {
+//         MapPoint* pMP = *sit;
+//         pMP->SetWorldPos(pMP->GetWorldPos()*scale);
+//     }
+//     std::cout<<std::endl<<"... Map scale updated ..."<<std::endl<<std::endl;
+// }
 
 
 

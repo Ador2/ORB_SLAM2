@@ -44,6 +44,7 @@ class Map
 public:
     // Update after an absolute scale is available
     void UpdateScale(const double &scale);
+    // void UpdateScale(const double &scale, const unsigned int LastStart);
 
     //-----------------------------------------
 public:

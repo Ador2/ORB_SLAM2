@@ -117,7 +117,8 @@ public:
         //thanabadee edited
     int GetNumTrack();
     int GetState();
-
+    bool GetVINSInited();
+    
     Map *GetMap();
 private:
 

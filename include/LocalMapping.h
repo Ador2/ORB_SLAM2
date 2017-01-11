@@ -65,6 +65,8 @@ public:
     void SetMapUpdateFlagInTracking(bool bflag);
     KeyFrame* GetMapUpdateKF();
 
+    int LastStart;
+
 protected:
     double mnStartTime;
     bool mbFirstTry;
