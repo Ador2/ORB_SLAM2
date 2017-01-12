@@ -36,7 +36,7 @@ imutopic: "/imu0"
 imagetopic: "/cam0/image_raw"
 
 # Timestamp shift. Timage = Timu + image_delay
-Camera.delaytoimu: 0.05
+Camera.delaytoimu: 0.14
 #bag dynamic 6 delay 0.23 -- bag dynamic 7 delay 0.29
 #other bag delay 0.14
 # acc=acc*9.8, if below is 1

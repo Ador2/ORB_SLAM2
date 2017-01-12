@@ -1,26 +1,26 @@
 # The set of languages for which implicit dependencies are needed:
-set(CMAKE_DEPENDS_LANGUAGES
+SET(CMAKE_DEPENDS_LANGUAGES
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/BowVector.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/BowVector.cpp.o"
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/FORB.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/FORB.cpp.o"
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/FeatureVector.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/FeatureVector.cpp.o"
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/ScoringObject.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/ScoringObject.cpp.o"
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DUtils/Random.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DUtils/Random.cpp.o"
-  "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DUtils/Timestamp.cpp" "/home/fx/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DUtils/Timestamp.cpp.o"
+SET(CMAKE_DEPENDS_CHECK_CXX
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/BowVector.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/BowVector.cpp.o"
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/FORB.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/FORB.cpp.o"
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/FeatureVector.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/FeatureVector.cpp.o"
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DBoW2/ScoringObject.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DBoW2/ScoringObject.cpp.o"
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DUtils/Random.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DUtils/Random.cpp.o"
+  "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/DUtils/Timestamp.cpp" "/home/nuc/catkin_ws/src/ORB_SLAM2/Thirdparty/DBoW2/build/CMakeFiles/DBoW2.dir/DUtils/Timestamp.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+SET(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Targets to which this target links.
-set(CMAKE_TARGET_LINKED_INFO_FILES
+SET(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # The include file search paths:
-set(CMAKE_C_TARGET_INCLUDE_PATH
+SET(CMAKE_C_TARGET_INCLUDE_PATH
   "/usr/include/opencv"
   )
-set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-set(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+SET(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
