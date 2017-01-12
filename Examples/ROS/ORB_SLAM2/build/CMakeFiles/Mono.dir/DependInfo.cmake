@@ -1,26 +1,32 @@
 # The set of languages for which implicit dependencies are needed:
-SET(CMAKE_DEPENDS_LANGUAGES
+set(CMAKE_DEPENDS_LANGUAGES
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
-SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/nuc/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc" "/home/nuc/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/Mono.dir/src/ros_mono.cc.o"
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/src/ros_mono.cc" "/home/fx/catkin_ws/src/ORB_SLAM2/Examples/ROS/ORB_SLAM2/build/CMakeFiles/Mono.dir/src/ros_mono.cc.o"
   )
-SET(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Preprocessor definitions for this target.
-SET(CMAKE_TARGET_DEFINITIONS
+set(CMAKE_TARGET_DEFINITIONS
   "COMPILEDWITHC11"
+  "DISABLE_PCAP"
+  "DISABLE_PNG"
   "ROS_PACKAGE_NAME=\"ORB_SLAM2\""
   )
 
 # Targets to which this target links.
-SET(CMAKE_TARGET_LINKED_INFO_FILES
+set(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # The include file search paths:
-SET(CMAKE_C_TARGET_INCLUDE_PATH
+set(CMAKE_C_TARGET_INCLUDE_PATH
   "../include"
+  "/home/fx/catkin_ws/devel/.private/tf2_msgs/include"
+  "/home/fx/catkin_ws/src/geometry2/tf2_msgs/include"
+  "/home/fx/catkin_ws/src/geometry2/tf2/include"
+  "/home/fx/catkin_ws/src/geometry2/tf2_ros/include"
   "/opt/ros/indigo/include"
   "/usr/include/opencv"
   "/usr/include/vtk-5.8"
@@ -28,12 +34,15 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   "../../../.."
   "../../../../src"
   "../../../../include"
-  "/home/nuc/catkin_ws/src/Pangolin/include"
-  "/home/nuc/catkin_ws/src/Pangolin/build/src/include"
+  "/home/fx/catkin_ws/Pangolin/include"
+  "/home/fx/catkin_ws/Pangolin/build/src/include"
   "/usr/include/eigen3"
-  "/usr/include/pcl-1.7"
+  "/usr/local/include/pcl-1.7"
+  "/home/fx/catkin_ws/devel/include/eigen3"
+  "/usr/local/include"
   "/usr/include/ni"
+  "/usr/include/openni2"
   )
-SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
-SET(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
+set(CMAKE_ASM_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

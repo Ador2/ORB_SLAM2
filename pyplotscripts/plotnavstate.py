@@ -2,7 +2,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-filepath = '/home/fx/catkin_ws/src/LearnVIORB/tmp/';
+filepath = '../tmp/';
 filename = filepath+'KeyFrameNavStateTrajectory.txt';
 
 NS = np.loadtxt(filename);

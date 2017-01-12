@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-filepath = '/home/nuc/catkin_ws/src/ORB_SLAM2/tmp/';
+filepath = '../tmp/';
 
 biasa = np.loadtxt(filepath+'biasa.txt');
 plt.figure(1);

@@ -2,7 +2,7 @@
 
 # Modify test.InitVIOTmpPath and bagfile to the correct path
 # Path to save tmp files/results
-test.InitVIOTmpPath: "/home/nuc/catkin_ws/src/ORB_SLAM2/tmp/"
+test.InitVIOTmpPath: "../tmp/"
 
 ## For good initialization (no movement at the beginning for some bag)
 test.DiscardTime: 0
