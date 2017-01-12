@@ -1,4 +1,5 @@
-build/
-Vocabulary/
-Thirdparty/*/build/ 
-Example/ROS/build
+/build/*
+/Vocabulary/*
+/Thirdparty/g2o/build/*
+/Thirdparty/DBoW2/build/*
+/Example/ROS/ORB_SLAM2/build/*
