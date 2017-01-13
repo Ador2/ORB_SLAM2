@@ -2,7 +2,7 @@
 
 # Modify test.InitVIOTmpPath and bagfile to the correct path
 # Path to save tmp files/results
-test.InitVIOTmpPath: "../tmp/"
+test.InitVIOTmpPath: "/home/fx/catkin_ws/src/ORB_SLAM2/tmp/"
 
 ## For good initialization (no movement at the beginning for some bag)
 test.DiscardTime: 0
@@ -36,7 +36,7 @@ imutopic: "/imu0"
 imagetopic: "/cam0/image_raw"
 
 # Timestamp shift. Timage = Timu + image_delay
-Camera.delaytoimu: 0.05
+Camera.delaytoimu: 0.07
 #bag dynamic 6 delay 0.23 -- bag dynamic 7 delay 0.29
 #other bag delay 0.14
 # acc=acc*9.8, if below is 1
@@ -69,7 +69,7 @@ Camera.p1: -0.000402
 Camera.p2: -1.4e-05
 
 # Camera frames per second 
-Camera.fps: 30.0
+Camera.fps: 15.0
 
 # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
 Camera.RGB: 1

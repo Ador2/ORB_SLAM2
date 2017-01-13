@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-filepath = '../tmp/';
+import os
+dir = os.path.dirname(__file__)
+filepath = os.path.join(dir, '../tmp/')
 
 biasa = np.loadtxt(filepath+'biasa.txt');
 plt.figure(1);
