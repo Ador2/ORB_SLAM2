@@ -1,0 +1,169 @@
+%YAML:1.0
+
+# Modify test.InitVIOTmpPath and bagfile to the correct path
+# Path to save tmp files/results
+test.InitVIOTmpPath: "/home/nuc/catkin_ws/src/ORB_SLAM2/tmp/"
+
+## For good initialization (no movement at the beginning for some bag)
+test.DiscardTime: 0
+
+
+
+#######################################
+
+# imutopic: "/mavros/imu/data"
+# imagetopic: "/camera/image_raw"
+imutopic: "/imu0"
+imagetopic: "/cam0/image_raw"
+
+# Timestamp shift. Timage = Timu + image_delay
+Camera.delaytoimu: 0.07
+#bag dynamic 6 delay 0.23 -- bag dynamic 7 delay 0.29
+#other bag delay 0.14
+# acc=acc*9.8, if below is 1
+IMU.multiplyG: 0
+
+# camera-imu frame transformation, Pi = Tic * Pc
+Camera.Tbc:
+ [-0.02117273, -0.0045266, 0.99976559, -0.06647993,
+  -0.9995006, -0.02336705, -0.02127291, 0.0247778 ,
+  0.02345786, -0.99971671, -0.0040296, -0.06150504,
+  0.0, 0.0, 0.0, 1.0]
+
+
+# Local Window size
+LocalMapping.LocalWindowSize: 12
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+
+# Camera calibration parameters (OpenCV)
+Camera.fx: 732.151147
+Camera.fy: 728.685062
+Camera.cx: 476.944241
+Camera.cy: 282.094312
+
+Camera.k1: -0.029532
+Camera.k2: -0.011162
+Camera.p1: -0.002512
+Camera.p2: -0.001402
+
+
+
+Camera.width: 960
+Camera.height: 540
+
+
+# Camera frames per second 
+Camera.fps: 30.0
+
+# IR projector baseline times fx (aprox.)
+Camera.bf: 40.0
+
+# Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+Camera.RGB: 1
+
+# Close/Far threshold. Baseline times.
+ThDepth: 50.0
+
+# Deptmap values factor 
+DepthMapFactor: 5000.0
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+
+# ORB Extractor: Number of features per image
+ORBextractor.nFeatures: 1500
+
+# ORB Extractor: Scale factor between levels in the scale pyramid   
+ORBextractor.scaleFactor: 1.2
+
+# ORB Extractor: Number of levels in the scale pyramid  
+ORBextractor.nLevels: 4
+
+# ORB Extractor: Fast threshold
+# Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# You can lower these values if your images have low contrast     
+ORBextractor.iniThFAST: 22
+ORBextractor.minThFAST: 12
+
+
+#kalibr
+#Camera.fx: 649.5100059843529
+#Camera.fy: 651.717867262662
+#Camera.cx: 313.0845709825867
+#Camera.cy: 254.49248450599632
+
+#Camera.k1: 0.09939349573818135
+#Camera.k2: -0.5286906197962478
+#Camera.p1: -0.003481329118317334
+#Camera.p2: 0.0022034784774183193
+
+# #opencv
+# Camera.fx: 635.590981078
+# Camera.fy: 631.502964935
+# Camera.cx: 306.039004532
+# Camera.cy: 234.036359682
+
+# Camera.k1: 0.347251423226
+# Camera.k2: -1.78487423376
+# Camera.p1: -0.00638254267472
+# Camera.p2: -0.00112045112174
+# Camera.k3: 2.63929728518
+
+
+
+# Camera.width: 640
+# Camera.height: 480
+
+# # Camera frames per second 
+# Camera.fps: 15.0
+
+# # IR projector baseline times fx (aprox.)
+# Camera.bf: 40.0
+
+# # Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale)
+# Camera.RGB: 1
+
+# # Close/Far threshold. Baseline times.
+# ThDepth: 50.0
+
+# # Deptmap values factor 
+# DepthMapFactor: 5000.0
+
+# #--------------------------------------------------------------------------------------------
+# # ORB Parameters
+# #--------------------------------------------------------------------------------------------
+
+# # ORB Extractor: Number of features per image
+# ORBextractor.nFeatures: 1500
+
+# # ORB Extractor: Scale factor between levels in the scale pyramid   
+# ORBextractor.scaleFactor: 1.2
+
+# # ORB Extractor: Number of levels in the scale pyramid  
+# ORBextractor.nLevels: 4
+
+# # ORB Extractor: Fast threshold
+# # Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# # Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# # You can lower these values if your images have low contrast     
+# ORBextractor.iniThFAST: 20
+# ORBextractor.minThFAST: 7
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize:2
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500

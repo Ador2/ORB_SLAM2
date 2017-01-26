@@ -1,0 +1,17 @@
+<launch>
+
+ 	<node pkg="ORB_SLAM2" type="MonoVI" name="VIO"  args="$(find ORB_SLAM2)/../../../Vocabulary/ORBvoc.bin $(find ORB_SLAM2)/../../../config/realsense.yaml" cwd="node" output="screen">
+
+ 		<!--remap from="/camera/image_raw" to="/rgb" /--> 
+ 		<remap from="/imu_repub" to="/mavros/imu/data" /> 
+
+		<remap from="/image_repub" to="/rgb" />
+	</node>
+
+<!--  	<node pkg="ORB_VIO" type="VIO_OUT" name="VIO"  args="$(find ORB_VIO)/../../../Vocabulary/ORBvoc.bin $(find ORB_VIO)/../../../config/euroc.yaml" cwd="node" output="screen">
+
+
+ 		<remap from="/image_repub" to="/cam0/image_raw" />
+ 		<remap from="/imu_repub" to="/imu0" />
+	</node> -->
+</launch>

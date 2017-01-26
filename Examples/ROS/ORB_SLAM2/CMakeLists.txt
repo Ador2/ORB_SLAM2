@@ -75,6 +75,34 @@ target_link_libraries(Mono
 ${LIBS}
 )
 
+# Node for stereo camera
+rosbuild_add_executable(NODE
+src/node.cpp
+)
+
+target_link_libraries(NODE
+${LIBS}
+)
+
+# Node for stereo camera
+rosbuild_add_executable(RS
+src/ros_mono_rs.cc
+)
+
+target_link_libraries(RS
+${LIBS}
+)
+
+# Node for stereo camera
+rosbuild_add_executable(VIRS
+src/vi_rs.cc
+src/MsgSync/MsgSynchronizer.cpp
+src/MsgSync/MsgSynchronizer.h
+)
+
+target_link_libraries(VIRS
+${LIBS}
+)
 # # Node for stereo camera
 # rosbuild_add_executable(Stereo
 # src/ros_stereo.cc

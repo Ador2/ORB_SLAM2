@@ -135,7 +135,7 @@ bool LocalMapping::TryInitVIO(void)
 
     // Step 1.
     // Try to compute initial gyro bias, using optimization with Gauss-Newton
-    printf("Get all kf size %d\n", N);
+    // printf("Get all kf size %d\n", N);
     Vector3d bgest = Optimizer::OptimizeInitialGyroBias(vScaleGravityKF);
 
     // Update biasg and pre-integration in LocalWindow. Remember to reset back to zero
