@@ -23,6 +23,7 @@
 #include<algorithm>
 #include<fstream>
 #include<chrono>
+#include <ctime>
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>        //thnabadee edited
@@ -49,6 +50,9 @@
 
 #include <librealsense/rs.hpp>
 #include <cstdio>
+#include <atomic>
+#include <map>
+#include "concurrency.hpp"
 
 using namespace std;
 
@@ -219,56 +223,186 @@ int main(int argc, char **argv)
     ros::NodeHandle nodeHandler;
     ros::Subscriber sub_reset = nodeHandler.subscribe("/slam_reset", 1, &reset_callback);
     // ros::Subscriber imagesub = nodeHandler.subscribe("/image_repub", 1, &ORBVIO::MsgSynchronizer::imageCallback, &msgsync);
-    ros::Subscriber imusub = nodeHandler.subscribe("/imu_repub", 200, &ORBVIO::MsgSynchronizer::imuCallback, &msgsync);
+    ros::Subscriber imusub = nodeHandler.subscribe("/imu_repub", 5, &ORBVIO::MsgSynchronizer::imuCallback, &msgsync);
 
 
     pcl_pub = nodeHandler.advertise<sensor_msgs::PointCloud2> ("/ORB_SLAM2/Cloud", 10,true);
-    publisher_pose = nodeHandler.advertise<crossover_nav::odom_data>("slam", 10);//thanabadee edited
+    publisher_pose = nodeHandler.advertise<crossover_nav::odom_data>("slam", 10);
     image_transport::ImageTransport it(nodeHandler);
     mImagePub = it.advertise("/Frame",10);
     
 
     //INTEL REALSENSE
-    rs::log_to_console(rs::log_severity::warn);
-    rs::context ctx; // Create a context object. This object owns the handles to all connected realsense devices.
-    if(ctx.get_device_count() == 0) return EXIT_FAILURE;
-    rs::device * dev = ctx.get_device(0); //Use first device
-    std::cout << ctx.get_device_count() << " connected to computer." << std::endl;
-    std::cout << "Using first - " << dev->get_name() << " - " << dev->get_serial() << ", FW: " << dev->get_firmware_version() << std::endl;
+       rs::context ctx;
+    printf("There are %d connected RealSense devices.\n", ctx.get_device_count());
+    if (ctx.get_device_count() == 0) return EXIT_FAILURE;
 
-    // dev->enable_stream(rs::stream::depth, rs::preset::best_quality);
-    // dev->enable_stream(rs::stream::color, rs::preset::best_quality);
-    dev->enable_stream(rs::stream::color, 1920, 1080, rs::format::rgb8, 30);
-    // dev->enable_stream(rs::stream::depth, 640, 480, rs::format::z16, 30);
+    rs::device * dev = ctx.get_device(0);
+    printf("\nUsing device 0, an %s\n", dev->get_name());
+    printf("    Serial number: %s\n", dev->get_serial());
+    printf("    Firmware version: %s\n", dev->get_firmware_version());
+
+    const auto streams = 2;
+    std::vector<uint16_t> supported_streams = { (uint16_t)rs::stream::depth, (uint16_t)rs::stream::color};
+    const size_t max_queue_size = 1; // To minimize latency prefer frame drops
+    single_consumer_queue<rs::frame> frames_queue[streams];
+    // texture_buffer buffers[streams];
+    std::atomic<bool> running(true);
+
+    struct resolution
+    {
+        int width;
+        int height;
+        rs::format format;
+    };
+    std::map<rs::stream, resolution> resolutions;
+
+
+    for (auto i : supported_streams)
+    {
+        dev->set_frame_callback((rs::stream)i, [dev, &running, &frames_queue, &resolutions, i, max_queue_size](rs::frame frame)
+        {
+            if (running && frames_queue[i].size() <= max_queue_size) frames_queue[i].enqueue(std::move(frame));
+        });
+    }
+
+    dev->enable_stream(rs::stream::depth, 640, 480, rs::format::z16, 30);
+    dev->enable_stream(rs::stream::color, 640, 480, rs::format::rgb8, 30, rs::output_buffer_format::native);
+
+
+// Configure depth to run at VGA resolution at 30 frames per second
+    // rs::option::r200_lr_auto_exposure_enabled;
+    int aee = dev->get_option(rs::option::r200_lr_exposure);
+    printf("Startup: autoexposure: %d\n",aee) ;
+    int ee =  dev->get_option(rs::option::r200_lr_gain);
+    printf("Startup: Emitter: %d\n", ee) ;
+    dev->set_option(rs::option::r200_lr_auto_exposure_enabled, 0);
+    dev->set_option(rs::option::r200_emitter_enabled, 1);
+    dev->set_option(rs::option::r200_lr_exposure, 200);//7 for outdoor 400 for indoor
+    dev->set_option(rs::option::r200_lr_gain, 200);
+    aee = dev->get_option(rs::option::r200_lr_exposure);
+    printf("Settings: autoexposure to: %d\n",aee) ;
+    ee =  dev->get_option(rs::option::r200_lr_gain);
+    printf("Settings: Emitter to: %d\n", ee) ;
+
+
     dev->start();
 
-    std::cout << endl << "-------" << std::endl;
-    std::cout << "Start processing sequence ..." << std::endl;
-
-    // cv::Mat imageDataDepth = cv::Mat::zeros(480,640, CV_16UC1);
 
 
     ros::Rate r(200);
     while(ros::ok()) {
         ros::Time ros_time=ros::Time::now();
-        static ros::Time rs_ts=ros_time;
-        if(ros_time - rs_ts > ros::Duration(0.033))
-        {
-            rs_ts = ros_time;
-            dev->wait_for_frames();
+        // static ros::Time rs_ts=ros_time;
+        // if(ros_time - rs_ts > ros::Duration(0.033))
+        // {
+        //     rs_ts = ros_time;
+            
 
-            // Retrieve our images
-            // const uint16_t * depth_image = (const uint16_t *)dev->get_frame_data(rs::stream::depth);
-            // imageDataRGB.data = (uint8_t *)dev->get_frame_data(rs::stream::color);
-            cv::Mat imageDataRGB(1080, 1920, CV_8UC3, (uchar *) dev->get_frame_data(rs::stream::color));
-            cv::resize(imageDataRGB, imageDataRGB,
-                cv::Size(
-                    960,
-                    540
-                ));
-            // sensor_msgs::ImageConstPtr img=matToImage(imageDataRGB);
-            msgsync.addImageMsg(matToImage(imageDataRGB));
+            rs::frame frame;
+
+            static std::clock_t start= std::clock();
+            double duration;
+    
+            if(frames_queue[1].try_dequeue(&frame)) 
+            {
+                duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+                // std::cout<<"printf: "<< duration <<'\n';
+                start = std::clock();
+                // Retrieve our images
+                // const uint16_t * depth_image = (const uint16_t *)dev->get_frame_data(rs::stream::depth);
+                // imageDataRGB.data = (uint8_t *)dev->get_frame_data(rs::stream::color);
+                cv::Mat imageDataRGB(480, 640, CV_8UC3, (uchar*)reinterpret_cast<const uint8_t *>(frame.get_data()));
+
+
+
+                // cv::resize(imageDataRGB, imageDataRGB,
+                //     cv::Size(
+                //         960,
+                //         540
+                //     ));
+
+                
+
+                // Because the Realsense stream provides the color as BGR and opencv uses RGB to represent the image, the last step is to transform the matrix to the correct format:
+                // cv::cvtColor(imageDataRGB, imageDataRGB, CV_BGR2RGB);
+
+                // sensor_msgs::ImageConstPtr img=matToImage(imageDataRGB);
+                msgsync.addImageMsg(matToImage(imageDataRGB));
+            }
+        // depth_frame = reinterpret_cast<const uint16_t *>(frame.get_data());
+        const uint16_t * depth_frame;
+        const uint16_t one_meter = static_cast<uint16_t>(1.0f / dev->get_depth_scale());  
+        float x_av=0.0;
+        float y_av=0.0;
+        int num_grid=0;
+        int row_grid=-1;
+
+         if (frames_queue[0].try_dequeue(&frame))
+          {
+            // depth_frame = reinterpret_cast<const uint16_t *>(frame.get_data());
+            // buffers[i].upload(frame);
+            // cv::Mat d(480, 640, CV_32FC1, (uchar*)depth_frame);
+             // mImagePub.publish(matToImage(d));
+
+
+            depth_frame = reinterpret_cast<const uint16_t *>(frame.get_data());
+ 
+
+            char buffer[(640/10+1)*(480/20)+1];
+            char * out = buffer;
+            int coverage[64] = {};
+            for(int y=0; y<480; ++y)
+            {
+              for(int x=0; x<640; ++x)
+              {
+                  int depth = *depth_frame++;
+                  if(depth > 0 && depth < one_meter) ++coverage[x/10];
+              }
+
+              if(y%20 == 19)
+              {
+                  for(int & c : coverage)
+                  {
+                          *out++ = " .:nhWWWW"[c/25]; //scale of depth (char)
+                          c = 0;
+                      }
+                      *out++ = '\n';
+                  }
+              }
+              *out++ = 0;
+
+              x_av=32;
+              y_av=11;
+              num_grid=0;
+              for(int i=0;i<(640/10+1)*(480/20)+1;i++)
+              {
+                  if(i%(640/10+1)==0) row_grid++;
+
+                  if(buffer[i]=='W')
+                  {
+                      x_av+=(i%(640/10+1));
+                      y_av+=row_grid;
+                      num_grid++;
+                  }
+              }
+              if(num_grid!=0)
+              {
+                  x_av/=num_grid;
+                  y_av/=num_grid;
+                  row_grid=-1;
+              }
+              x_av-=32;
+              y_av-=11;
+              // if(TERMINAL_VISUALIZATION)
+                // printf("\n%s", buffer);
         }
+
+
+      
+            
+        // }
         bool bdata = msgsync.getRecentMsgs(imageMsg,vimuMsg);
          if(bdata)
         {
@@ -280,12 +414,12 @@ int main(int argc, char **argv)
                 double ax = imuMsg->linear_acceleration.x;
                 double ay = imuMsg->linear_acceleration.y;
                 double az = imuMsg->linear_acceleration.z;
-                if(bAccMultiply98)
-                {
-                    ax *= g3dm;
-                    ay *= g3dm;
-                    az *= g3dm;
-                }
+                // if(bAccMultiply98)
+                // {
+                //     ax *= g3dm;
+                //     ay *= g3dm;
+                //     az *= g3dm;
+                // }
                 ORB_SLAM2::IMUData imudata(imuMsg->angular_velocity.x,imuMsg->angular_velocity.y,imuMsg->angular_velocity.z,
                                 ax,ay,az,imuMsg->header.stamp.toSec());
                 vimuData.push_back(imudata);
@@ -411,14 +545,13 @@ int main(int argc, char **argv)
 
 
             if(mImagePub.getNumSubscribers()) {
-                cv::Mat im = SLAM.ImageToPub();
-                cv_bridge::CvImage rosImage;
-                rosImage.image = im.clone();
-                rosImage.header.stamp = currenttime;
-                rosImage.header.frame_id ="Camera";
-                rosImage.encoding = "bgr8";
+                sensor_msgs::ImagePtr imMsg = matToImage(SLAM.ImageToPub());
+                imMsg->header.stamp = currenttime;
+                imMsg->header.frame_id ="Camera";
+                imMsg->header.frame_id ="Camera";
+                imMsg->encoding = "bgr8";
             
-                mImagePub.publish(rosImage.toImageMsg());
+                mImagePub.publish(imMsg);
             }
 
         }
@@ -430,6 +563,16 @@ int main(int argc, char **argv)
     }
 
 
+
+    //REALSENSE
+    running = false;
+    for (auto i : supported_streams) frames_queue[i].clear();
+    dev->stop();
+    for (auto i : supported_streams)
+    {
+        if (dev->is_stream_enabled((rs::stream)i))
+            dev->disable_stream((rs::stream)i);
+    }
 
 
     // Stop all threads
