@@ -20,6 +20,7 @@
 #include <ros/package.h>
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 // #include <pcl/ros/conversions.h>
 // #include <pcl/point_cloud.h>
@@ -235,9 +236,13 @@ int main(int argc, char * argv[])
   // rs::stream::rectified_color
   // rs::stream::depth_aligned_to_rectified_color
   // dev->enable_stream(rs::stream::color,rs::preset::best_quality);
-  dev->enable_stream(rs::stream::color, 1920, 1080, rs::format::rgb8, 30);
+  // dev->enable_stream(rs::stream::color, 1920, 1080, rs::format::rgb8, 30);
+  dev->enable_stream(rs::stream::color, 640, 480, rs::format::rgb8, 60);
   // dev->enable_stream(rs::stream::depth,rs::preset::best_quality);
   // dev->enable_stream(rs::stream::infrared,rs::preset::best_quality);
+      dev->set_option(rs::option::frames_queue_size, 2.00);
+    printf("FRMAE Q SIZE %f\n\n", dev->get_option(rs::option::frames_queue_size));
+
   if(!dev->is_stream_enabled(rs::stream::color))
   {
       std::cerr << "cannot open\n";
@@ -313,7 +318,7 @@ int main(int argc, char * argv[])
   // sensor_msgs::CameraInfoPtr ir_ci_ptr(boost::make_shared<sensor_msgs::CameraInfo>());
   // rs_intrinsics2camerainfo(*ir_ci_ptr, ir_intrin,depth_frame_id);
 
-  ros::Rate loop_rate(30);
+  ros::Rate loop_rate(120);
   ros::Rate idle_rate(1);
 
   dev->start();
@@ -343,40 +348,41 @@ ros::Time head_time_stamp;
     head_sequence_id++;
     head_time_stamp = ros::Time::now();
 
-    std::cout << "got frame " << std::endl;
-    std::cout << ". " << std::endl;
+    // std::cout << "got frame " << std::endl;
+    // std::cout << ". " << std::endl;
     const uint8_t *color_frame= 0;
     const uint16_t *depth_frame=0;
     const uint16_t *ir_frame=0;
     {
       // TODO publish depth (realsense_depth_image_pub, depth_ci, ...)
       // color_frame = reinterpret_cast<const uint8_t *>(dev->get_frame_data(rs::stream::color));
-      cv::Mat rgb(1080, 1920, CV_8UC3, (uchar *) dev->get_frame_data(rs::stream::color));
-      cv::resize(rgb, rgb,
-      cv::Size(
-        960,
-        540
-      ));
-
+      cv::Mat rgb(480, 640, CV_8UC3, (uchar *) dev->get_frame_data(rs::stream::color));
+      // cv::resize(rgb, rgb,
+      // cv::Size(
+      //   960,
+      //   540
+      // ));
+      cv::Mat greyMat;
+      cv::cvtColor(rgb, greyMat, CV_RGB2GRAY);
       sensor_msgs::ImagePtr rgb_img(new sensor_msgs::Image);
 
-      rgb_img->header.seq = head_sequence_id;
-      rgb_img->header.stamp = head_time_stamp;
-      rgb_img->header.frame_id = rgb_frame_id;
+      // rgb_img->header.seq = head_sequence_id;
+      // rgb_img->header.stamp = head_time_stamp;
+      // rgb_img->header.frame_id = rgb_frame_id;
 
-      rgb_img->width = color_intrin.width*0.5;
-      rgb_img->height = color_intrin.height*0.5;
+      // rgb_img->width = color_intrin.width*0.5;
+      // rgb_img->height = color_intrin.height*0.5;
 
      
-      rgb_img->is_bigendian = 0;
+      // rgb_img->is_bigendian = 0;
 
-      int step = sizeof(unsigned char) * 3 * rgb_img->width;
-      int size = step * rgb_img->height;
-      rgb_img->step = step;
-      rgb_img->data.resize(size);
+      // int step = sizeof(unsigned char) * 3 * rgb_img->width;
+      // int size = step * rgb_img->height;
+      // rgb_img->step = step;
+      // rgb_img->data.resize(size);
       // memcpy(&(rgb_img->data[0]), color_frame, size);
-      rgb_img = matToImage(rgb);
-       rgb_img->encoding = sensor_msgs::image_encodings::RGB8;
+      rgb_img = matToImage(greyMat);
+       // rgb_img->encoding = sensor_msgs::image_encodings::RGB8;
        
       realsense_rgb_image_pub.publish(rgb_img,color_ci_ptr);
     }
